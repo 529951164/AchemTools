@@ -1,0 +1,16 @@
+;here is a simple input file
+example file
+1111
+
+1, a + b = c + d, 1.E13
+2, a + d = m + n, 1.E13
+3, n = p, 5.E5; at long reaction times, most of
+4, p = n, 1.E3; the n is converted to p
+5, =c, 1.
+;allows for surface generation of c
+END
+a, 1.E-6; change by factors of 2
+	b, 5.E-7
+END
+0.001
+2.E-7, 4.E-7, 6.E-7, 8.E-7, 1.E-6

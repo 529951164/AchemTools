@@ -1,0 +1,10 @@
+﻿JavaProject/.idea
+JavaProject/csv
+JavaProject/out/production
+pythonProject/.idea
+pythonProject/excel
+pythonProject/csv
+pythonProject/__pycache__
+pythonProject/build
+pythonProject/line.xlsx
+pythonProject/result_K1-3_K2-1.csv
