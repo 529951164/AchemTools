@@ -2,6 +2,7 @@
 import openpyxl
 import csv
 import os
+import json
 from datetime import date
 
 from openpyxl import Workbook
@@ -76,11 +77,9 @@ def add_chart(path, file_name):
     s2.graphicalProperties.line.solidFill = "00AAAA"
     s2.graphicalProperties.line.dashStyle = "sysDot"
     s2.graphicalProperties.line.width = 100050  # width in EMUs
-
     ws.add_chart(c1, "i10")
-
     wb.save("excel/" + file_name + '.xlsx')
-
+    export_json(file_name)
 
 def file_name(file_dir):
     for root, dirs, files in os.walk(file_dir):
@@ -89,6 +88,43 @@ def file_name(file_dir):
             add_chart('./csv/' + file, file.replace('.csv',''))
 
 
+def export_json(file_name):
+    if not os.path.exists('database'):
+        os.makedirs('database')
+    json_file = open('./database/' + file_name + '.json', 'w+', encoding='utf-8')
+    csv_file = open('./csv/' + file_name + '.csv', 'r', encoding='utf-8')
+
+    # 读取文件第3行不读取换行符作为json文件里每个数据的键值
+    csv_file.readline()
+    csv_file.readline()
+    keys = csv_file.readline().strip('\n').split(',')
+    json_file.write('[\n')
+    flag = 0
+    line = csv_file.readline()
+    while line:
+
+        # 字符串列表转化为数字列表
+        values = line.strip('\n').split(',')
+        values_temp = map(eval, values[0:5])
+        values_else = list(values_temp)
+        # values_else.append(values[2])
+        # 用zip()函数将两个列表形成映射关系，创建字典
+        dic_temp = dict(zip(keys, values_else))
+        # 将字典转化为字符串且带有缩进
+        # flag用于判断json文件中 "," 和换行的添加位置
+        json_str = json.dumps(dic_temp, indent=4)
+        if flag == 1:
+            json_file.write(',\n')
+
+        json_file.write(json_str)
+        flag = 1
+        line = csv_file.readline()
+
+    json_file.write(']')
+    csv_file.close()
+    json_file.close()
+
+
 if __name__ == '__main__':
     file_name('csv')
-
+    # export_json()
