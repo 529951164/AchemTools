@@ -79,26 +79,38 @@ def add_chart(path, file_name):
     s2.graphicalProperties.line.width = 100050  # width in EMUs
     ws.add_chart(c1, "i10")
     wb.save("excel/" + file_name + '.xlsx')
-    export_json(file_name)
+
 
 def file_name(file_dir):
+    allJson = '[';
     for root, dirs, files in os.walk(file_dir):
         print('files:', files)  # 当前路径下所有非目录子文件
         for file in files:
-            add_chart('./csv/' + file, file.replace('.csv',''))
+            name_str = file.replace('.csv','')
+            add_chart('./csv/' + file, name_str)
+            allJson += export_json(name_str) + ","
+
+    allJson += ']'
+    allJson = allJson.replace(',]', ']')
+    allJson = allJson.replace('    ', '')
+    json_file = open('./database/all.json', 'w+', encoding='utf-8')
+    json_file.write(allJson)
+    json_file.close()
 
 
 def export_json(file_name):
     if not os.path.exists('database'):
         os.makedirs('database')
-    json_file = open('./database/' + file_name + '.json', 'w+', encoding='utf-8')
+    result_str = '{'
+    # json_file = open('./database/' + file_name + '.json', 'w+', encoding='utf-8')
     csv_file = open('./csv/' + file_name + '.csv', 'r', encoding='utf-8')
-
+    result_str += f'"{file_name}":'
     # 读取文件第3行不读取换行符作为json文件里每个数据的键值
     csv_file.readline()
     csv_file.readline()
     keys = csv_file.readline().strip('\n').split(',')
-    json_file.write('[\n')
+    # json_file.write('[\n')
+    result_str += '['
     flag = 0
     line = csv_file.readline()
     while line:
@@ -113,16 +125,19 @@ def export_json(file_name):
         # 将字典转化为字符串且带有缩进
         # flag用于判断json文件中 "," 和换行的添加位置
         json_str = json.dumps(dic_temp, indent=4)
-        if flag == 1:
-            json_file.write(',\n')
+        json_str = json_str.replace("\n", "", 100)
+        json_str += ','
+        # json_file.write(json_str)
+        result_str += json_str
 
-        json_file.write(json_str)
-        flag = 1
         line = csv_file.readline()
 
-    json_file.write(']')
+    # json_file.write(']')
+    result_str += ']}'
     csv_file.close()
-    json_file.close()
+    # json_file.close()
+    result_str = result_str.replace(',]', ']')
+    return result_str
 
 
 if __name__ == '__main__':
