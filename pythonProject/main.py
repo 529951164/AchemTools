@@ -117,7 +117,7 @@ def export_json(file_name):
 
         # 字符串列表转化为数字列表
         values = line.strip('\n').split(',')
-        values_temp = map(eval, values[0:5])
+        values_temp = map(eval, values[0:6])
         values_else = list(values_temp)
         # values_else.append(values[2])
         # 用zip()函数将两个列表形成映射关系，创建字典
