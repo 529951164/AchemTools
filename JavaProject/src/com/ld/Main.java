@@ -9,6 +9,8 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        ClearFolder("csv");
+        ClearFolder("excel");
         ReadParameter();
     }
 
@@ -121,5 +123,19 @@ public class Main {
             file.mkdir();
         }
 
+    }
+
+    public static void ClearFolder(String str){
+        File file = new File(str);
+        if (file.exists())
+        {
+            if (file.isDirectory()) {
+                for (File f : file.listFiles()) {
+                    f.delete();
+                }
+            } else {
+                file.delete();
+            }
+        }
     }
 }
