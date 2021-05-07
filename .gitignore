@@ -1,4 +1,4 @@
-﻿JavaProject/.idea
+JavaProject/.idea
 JavaProject/csv
 JavaProject/out/production
 pythonProject/.idea
@@ -8,3 +8,5 @@ pythonProject/__pycache__
 pythonProject/build
 pythonProject/line.xlsx
 pythonProject/result_K1-3_K2-1.csv
+pythonProject/csvxx
+pythonProject/csvx
