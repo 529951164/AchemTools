@@ -2,7 +2,7 @@
 SS
 1101
 1, Hg+nom=Hg1, {k1}e-6
-2, Hg1+nom=Hg2, {k1}e-2
+2, Hg1+nom=Hg2, {k2}e-2
 3, Hg2+nom=Hg1, {k3}e-3
 4, Hg1+nom=Hg, {k4}e-2
 
