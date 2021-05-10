@@ -1,12 +1,15 @@
 ;
 SS
 1101
+1, Hg+nom=Hg1, {k1}e-6
+2, Hg1+nom=Hg2, {k1}e-2
+3, Hg2+nom=Hg1, {k3}e-3
+4, Hg1+nom=Hg, {k4}e-2
 
-1, Hg+O2=Hg1, {k1}e-5
-2, Hg1+O2=Hg2, {k2}e-4
 END
-O2, 1
-Hg, 6e-1
+nom, 0.02
+Hg, 0.058
+
 END
 0.001
 0.0,

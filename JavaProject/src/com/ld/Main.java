@@ -18,36 +18,41 @@ public class Main {
     {
         String jsonString = ReadFile("config.json");
         Group group2 = JSON.parseObject(jsonString, Group.class);
-        System.out.println("parameter:(" + group2.start_k1 + ","+ group2.end_k1 + ","+ group2.start_k2 + ","+ group2.end_k2 + ","+ group2.offset + ");");
-        RangeCommand(group2.start_k1, group2.end_k1, group2.start_k2, group2.end_k2, group2.offset);
+        System.out.println("parameter:(" + jsonString);
+        RangeCommand(group2.start_k1, group2.end_k1, group2.start_k2, group2.end_k2, group2.start_k3, group2.end_k3, group2.start_k4, group2.end_k4, group2.offset);
     }
 
-    public static void RangeCommand(float start_k1, float end_k1, float start_k2, float end_k2, float pass)
+    public static void RangeCommand(float start_k1, float end_k1, float start_k2, float end_k2, float start_k3, float end_k3, float start_k4, float end_k5, float pass)
     {
         judeDirExists(new File("csv"));
         String result = "";
         for (float i = start_k1; i < end_k1; i+= pass) {
             for (float j = start_k2; j < end_k2; j+= pass) {
+                for (float k = start_k2; k < end_k2; k+= pass) {
+                    for (float l = start_k2; l < end_k2; l+= pass) {
+                        DecimalFormat decimalFormat=new DecimalFormat(".0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+                        String k1=decimalFormat.format(i);//format 返回的是字符串
+                        String k2=decimalFormat.format(j);
+                        String k3=decimalFormat.format(k);
+                        String k4=decimalFormat.format(l);
 
-                DecimalFormat decimalFormat=new DecimalFormat(".0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-                String k1=decimalFormat.format(i);//format 返回的是字符串
-                String k2=decimalFormat.format(j);//format 返回的是字符串
-
-                result = getResult(k1, k2);
-                try {
-                    new OutputToExcel("result_K1=" + k1 + "_K2=" + k2, result);
+                        result = getResult(k1, k2, k3, k4);
+                        try {
+                            new OutputToExcel("result_K1=" + k1 + "_K2=" + k2 + "_K3=" + k3 + "_K4=" + k4, result);
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+                            System.err.println("OutputToExcel." + ex.getMessage());
+                        }
+                        System.out.println(result);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                    System.err.println("OutputToExcel." + ex.getMessage());
-                }
-                System.out.println(result);
             }
         }
     }
     private static String endOfLine = System.getProperty("line.separator");
-    public static String getResult(String k1, String k2)
+    public static String getResult(String k1, String k2, String k3, String k4)
     {
         Runtime r = Runtime.getRuntime();
              try {
@@ -62,7 +67,7 @@ public class Main {
                OutputStream stdout = p.getOutputStream();
                OutputStreamWriter osw = new OutputStreamWriter(stdout);
                BufferedWriter bw = new BufferedWriter(osw);
-               String str = getTemplate().replace("{k1}", k1).replace("{k2}", k2);
+               String str = getTemplate().replace("{k1}", k1).replace("{k2}", k2).replace("{k3}", k3).replace("{k4}", k4);
                Scanner scan = new Scanner(str);
                while (scan.hasNextLine()) {
                      String line = scan.nextLine();
